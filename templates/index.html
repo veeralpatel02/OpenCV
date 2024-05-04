@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div class="container">
+   <h1> Live Streaming </h1>
+   <select id="objects">
+       <option value="video_feed1">Red Object</option>
+       <option value="video_feed_lblue">Blue Object</option>
+        <option value="video_feed_circle">Circular Object</option>
+        <option value="video_feed_face">Human Face</option>
+        <option value="video_feed_qrcode">QR Code</option>
+   </select>
+
+
+<button id="detect">Detect</button>
+<button id="track">Track</button>
+<button id="stopTracking">Stop Tracking</button>
+
+<br>
+<img src="" id="liveFeed" alt="Live Feed">
+
+
+<!--<div>
+    <iframe id="embedded_webpage" src="#" width="100%" height="400"></iframe>
+</div>!-->
+
+<div id="detectionImageDiv">
+<h3><em>Detected Image:</em></h3>
+<img id="detectionImage" src="" width="50%">
+</div>
+<img src="data:image/jpeg;base64,{{ img_base64 }}" id="image" alt="Detected Objects">
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const detect = document.getElementById("detect");
+    const trackButton = document.getElementById("track");
+    const stopTrackingButton = document.getElementById("stopTracking");
+    const detectionImage = document.getElementById("detectionImage");
+    const liveFeedImage = document.getElementById("liveFeed");
+    
+    
+    detect.addEventListener("click", async () => {
+    const response = await fetch("/detect", { method: "GET" });
+    if (response.ok) {
+       // Replace the content of the body with the received HTML
+       document.body.innerHTML = await response.text();
+    }
+    });
+    
+    
+    trackButton.addEventListener("click", () => {
+    const selector = document.getElementById('objects');
+    const selectedValue = selector.value;
+    if (selectedValue === 'video_feed1') {
+       // Start tracking for red object
+       startTracking("/video_feed1");
+    } else if (selectedValue === 'video_feed_lblue') {
+       // Start tracking for blue object
+       startTracking("/video_feed_lBlue");
+    } else if (selectedValue === 'video_feed_circle') {
+       // Start tracking for circular object
+       startTracking("/video_feed_circle");
+    } else if (selectedValue === 'video_feed_face') {
+       // Start tracking for human face
+       startTracking("/video_feed_face");
+    } else if (selectedValue === 'video_feed_qrcode') {
+       // Start tracking for human face
+       startTracking("/video_feed_qrcode");
+    }
+    });
+    
+    
+    
+    
+    stopTrackingButton.addEventListener("click", () => {
+       // Stop object tracking
+       stopTracking();
+    });
+    
+    
+    
+    
+    function startTracking(endpoint) {
+       // Hide track button, show stop tracking button
+       //trackButton.style.display = "none";
+       //stopTrackingButton.style.display = "block";
+    
+    
+       // Start tracking by updating live feed image src
+       liveFeedImage.src = endpoint;
+    }
+    
+    
+
+    function stopTracking() {
+       // Hide stop tracking button, show track button
+       //stopTrackingButton.style.display = "none";
+      //trackButton.style.display = "block";
+      
+       startTracking("/video_feed");
+    }
+    });
+    
+    
+    </script>
+    </body>
+    </html>
+    
+    
+    
+    
